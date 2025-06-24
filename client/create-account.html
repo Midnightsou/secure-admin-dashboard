@@ -7,14 +7,15 @@
 </head>
 <body>
     <div class="login-cointainer">
-        <form class="login-form">
-            <h2>Admin login</h2>
+        <form class="login-form" id="createAccountForm">
+            <h2>Create Admin Account</h2>
             <input type="text" placeholder="Username" id="Username" required/>
-            <input type="text" placeholder="Email" id="Email" required/>
+            <input type="email" placeholder="Email" id="Email" required/>
             <input type="password" placeholder="Password" id="Password" required/>
             <input type="password" placeholder="Confirm Password" id="ConfirmPassword" required/>
-            <button type="submit">create-account</button>
-            <p>Already have an account click here to login <a href="index.html">LOGIN</a></p>
+            <button type="submit">Create Account</button>
+            <p>Already have an account? <a href="index.html">LOGIN</a></p>
+            <p id="message" style="color:#dc3545;margin-top:10px;"></p>
         </form>
     </div>
     <style>
@@ -56,6 +57,47 @@
             background-color: #218838;
         }
     </style>
-    <script src="main.js"></script>
+    <script>
+        document.getElementById('createAccountForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('Username').value.trim();
+            const email = document.getElementById('Email').value.trim();
+            const password = document.getElementById('Password').value;
+            const confirmPassword = document.getElementById('ConfirmPassword').value;
+            const message = document.getElementById('message');
+
+            if (!username || !email || !password || !confirmPassword) {
+                message.textContent = "All fields are required.";
+                return;
+            }
+            if (password !== confirmPassword) {
+                message.textContent = "Passwords do not match.";
+                return;
+            }
+            if (password.length < 6) {
+                message.textContent = "Password must be at least 6 characters.";
+                return;
+            }
+
+            // Get users array, add new user, and save
+            let usersArr = JSON.parse(localStorage.getItem('usersArr') || "[]");
+            usersArr.push({ username, email, password });
+            localStorage.setItem('usersArr', JSON.stringify(usersArr));
+
+            // Update users count
+            localStorage.setItem('users', usersArr.length);
+
+            // Add a log entry
+            let logs = JSON.parse(localStorage.getItem('logs') || "[]");
+            logs.push({ action: "Account created", user: username, time: new Date().toISOString() });
+            localStorage.setItem('logs', JSON.stringify(logs));
+
+            message.style.color = "#28a745";
+            message.textContent = "Account created successfully! Redirecting to login...";
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 1500);
+        });
+    </script>
 </body>
 </html>

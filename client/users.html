@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Users | Admin</title>
+</head>
+<body style="margin:0;font-family:Arial,sans-serif;background:#f4f4f4;">
+  <div class="dashboard" style="display:flex;min-height:100vh;">
+    <aside class="sidebar" style="width:220px;background:#23272b;color:#fff;padding:30px 0 0 0;display:flex;flex-direction:column;align-items:center;">
+      <h2 style="margin-bottom:30px;font-size:1.7rem;">Admin</h2>
+      <ul style="list-style:none;padding:0;width:100%;margin:0;">
+        <li><a href="dashboard.html" style="display:block;padding:14px 32px;color:#fff;text-decoration:none;">Dashboard</a></li>
+        <li><a href="users.html" style="display:block;padding:14px 32px;color:#fff;text-decoration:none;background:#181b1f;">Users</a></li>
+        <li><a href="#" style="display:block;padding:14px 32px;color:#fff;text-decoration:none;">Logs</a></li>
+        <li><a href="#" style="display:block;padding:14px 32px;color:#fff;text-decoration:none;">Settings</a></li>
+        <li><a href="#" id="logout" style="display:block;padding:14px 32px;color:#dc3545;text-decoration:none;">Logout</a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content" style="flex:1;padding:40px;">
+      <header class="navbar" style="margin-bottom:30px;">
+        <h1 style="margin:0;font-size:2.2rem;color:#23272b;">Users</h1>
+      </header>
+
+      <section class="table-section" style="background:#fff;padding:24px 32px;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+        <table id="users-table" style="width:100%;border-collapse:collapse;">
+          <thead>
+            <tr>
+              <th style="text-align:left;padding:10px 8px;border-bottom:2px solid #eee;">Username</th>
+              <th style="text-align:left;padding:10px 8px;border-bottom:2px solid #eee;">Role</th>
+              <th style="text-align:left;padding:10px 8px;border-bottom:2px solid #eee;">Created At</th>
+              <th style="text-align:left;padding:10px 8px;border-bottom:2px solid #eee;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="user-list"></tbody>
+        </table>
+        <!-- Edit Modal -->
+        <div id="editModal" class="modal" style="display:none;position:fixed;z-index:1;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(0,0,0,0.4);">
+          <div class="modal-content" style="background-color:#fefefe;margin:15% auto;padding:20px;border:1px solid #888;width:80%;max-width:400px;border-radius:8px;">
+            <h3>Edit User</h3>
+            <input type="text" id="edit-username" placeholder="Username" style="width:100%;margin-bottom:10px;padding:8px;" />
+            <select id="edit-role" style="width:100%;margin-bottom:10px;padding:8px;">
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
+            </select>
+            <button id="saveEdit" style="background:#007bff;color:#fff;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;">Save</button>
+            <button onclick="closeModal()" style="background:#ccc;color:#23272b;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;margin-left:8px;">Cancel</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script>
+    // Logout handler
+    document.getElementById('logout').onclick = function(e) {
+      e.preventDefault();
+      localStorage.removeItem('token');
+      window.location.href = 'index.html';
+    };
+
+    // Fetch and display users, handle delete and edit
+    if (window.location.pathname.includes('users.html')) {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.location.href = 'index.html';
+      } else {
+        fetch('http://localhost:5000/api/users', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        .then(res => res.json())
+        .then(users => {
+          const table = document.querySelector('#user-list');
+          table.innerHTML = '';
+          users.forEach(user => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${user.username}</td>
+              <td>${user.role}</td>
+              <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+              <td>
+                <button class="edit-btn" data-id="${user._id}" data-username="${user.username}" data-role="${user.role}" style="background:#007bff;color:#fff;border:none;padding:6px 14px;border-radius:4px;cursor:pointer;margin-right:6px;">Edit</button>
+                <button class="delete-btn" data-id="${user._id}" style="background:#dc3545;color:#fff;border:none;padding:6px 14px;border-radius:4px;cursor:pointer;">Delete</button>
+              </td>
+            `;
+            table.appendChild(tr);
+          });
+
+          // Handle Edit Buttons
+          document.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const userId = btn.dataset.id;
+              const username = btn.dataset.username;
+              const role = btn.dataset.role;
+
+              document.getElementById('edit-username').value = username;
+              document.getElementById('edit-role').value = role;
+              document.getElementById('editModal').style.display = 'flex';
+              document.getElementById('saveEdit').setAttribute('data-id', userId);
+            });
+          });
+
+          // Add event listeners for delete buttons
+          document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+              const userId = btn.dataset.id;
+              if (confirm('Are you sure you want to delete this user?')) {
+                const res = await fetch(`http://localhost:5000/api/users/${userId}`, {
+                  method: 'DELETE',
+                  headers: {
+                    Authorization: `Bearer ${token}`
+                  }
+                });
+                const data = await res.json();
+                alert(data.msg);
+                location.reload();
+              }
+            });
+          });
+        })
+        .catch(err => {
+          alert('Unauthorized or error fetching users');
+          window.location.href = 'index.html';
+        });
+      }
+    }
+
+    // Save Edited User
+    document.getElementById('saveEdit').addEventListener('click', async () => {
+      const userId = document.getElementById('saveEdit').getAttribute('data-id');
+      const username = document.getElementById('edit-username').value;
+      const role = document.getElementById('edit-role').value;
+      const token = localStorage.getItem('token');
+
+      const res = await fetch(`http://localhost:5000/api/users/${userId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ username, role })
+      });
+
+      const data = await res.json();
+      alert('User updated');
+      closeModal();
+      location.reload();
+    });
+
+    function closeModal() {
+      document.getElementById('editModal').style.display = 'none';
+    }
+
+    // Close modal on outside click
+    window.onclick = function(event) {
+      const modal = document.getElementById('editModal');
+      if (event.target == modal) {
+        closeModal();
+      }
+    };
+  </script>
+</body>
+</html>

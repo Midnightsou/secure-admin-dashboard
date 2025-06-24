@@ -5,35 +5,151 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin dashboard</title>
 </head>
-<body style="margin:0;font-family:Arial,sans-serif;background:#f4f4f4;">
+<body style="margin:0;font-family:Segoe UI,Arial,sans-serif;background:#f4f6fb;">
     <div class="dashboard" style="display:flex;min-height:100vh;">
-        <aside class="sidebar" style="width:220px;background:#23272b;color:#fff;padding:30px 0 0 0;display:flex;flex-direction:column;align-items:center;">
-            <h2 style="margin-bottom:30px;font-size:1.7rem;">Admin</h2>
+        <aside class="sidebar" style="width:240px;background:#23272b;color:#fff;padding:32px 0 0 0;display:flex;flex-direction:column;align-items:center;">
+            <h2 style="margin-bottom:36px;font-size:2rem;letter-spacing:2px;">Admin</h2>
             <ul style="list-style:none;padding:0;width:100%;margin:0;">
-                <li><a href="#" style="display:block;padding:14px 32px;color:#fff;text-decoration:none;transition:background 0.2s;">Dashboard</a></li>
-                <li><a href="#" style="display:block;padding:14px 32px;color:#fff;text-decoration:none;transition:background 0.2s;">Users</a></li>
-                <li><a href="#" style="display:block;padding:14px 32px;color:#fff;text-decoration:none;transition:background 0.2s;">Logs</a></li>
-                <li><a href="#" style="display:block;padding:14px 32px;color:#fff;text-decoration:none;transition:background 0.2s;">Settings</a></li>
-                <li><a href="#" id="logout" style="display:block;padding:14px 32px;color:#dc3545;text-decoration:none;transition:background 0.2s;">Logout</a></li>
+                <li><a href="#" style="display:block;padding:16px 36px;color:#fff;text-decoration:none;font-weight:500;transition:background 0.2s;">Dashboard</a></li>
+                <li><a href="users.html" style="display:block;padding:16px 36px;color:#fff;text-decoration:none;font-weight:500;transition:background 0.2s;">Users</a></li>
+                <li><a href="#" style="display:block;padding:16px 36px;color:#fff;text-decoration:none;font-weight:500;transition:background 0.2s;">Logs</a></li>
+                <li><a href="#" style="display:block;padding:16px 36px;color:#fff;text-decoration:none;font-weight:500;transition:background 0.2s;">Settings</a></li>
+                <li><a href="#" id="logout" style="display:block;padding:16px 36px;color:#dc3545;text-decoration:none;font-weight:500;transition:background 0.2s;">Logout</a></li>
             </ul>
         </aside>
-        <main class="main-content" style="flex:1;padding:40px;">
-            <header class="navbar" style="margin-bottom:30px;display:flex;align-items:center;justify-content:space-between;">
-                <h1 style="margin:0;font-size:2.2rem;color:#23272b;">Dashboard</h1>
-                <span style="color:#888;font-size:1rem;">Welcome, Admin</span>
+        <div style="flex:1;display:flex;flex-direction:column;">
+            <header class="navbar" style="background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.04);padding:24px 40px 16px 40px;display:flex;align-items:center;justify-content:space-between;">
+                <h1 style="margin:0;font-size:2.3rem;color:#23272b;letter-spacing:1px;">Dashboard</h1>
+                <span style="color:#888;font-size:1.1rem;">Welcome, Admin</span>
             </header>
-            <section class="cards" style="display:flex;gap:28px;flex-wrap:wrap;">
-                <div class="card" style="background:#fff;padding:32px 48px;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,0.08);font-size:1.2rem;min-width:140px;flex:1;">
-                    Users<br><strong style="font-size:2rem;">102</strong>
-                </div>
-                <div class="card" style="background:#fff;padding:32px 48px;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,0.08);font-size:1.2rem;min-width:140px;flex:1;">
-                    Logs<br><strong style="font-size:2rem;">534</strong>
-                </div>
-                <div class="card" style="background:#fff;padding:32px 48px;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,0.08);font-size:1.2rem;min-width:140px;flex:1;">
-                    Errors<br><strong style="font-size:2rem;color:#dc3545;">2</strong>
-                </div>
-            </section>
-        </main>
+            <main class="main-content" style="flex:1;padding:40px;">
+                <section class="cards" style="display:flex;gap:32px;flex-wrap:wrap;margin-bottom:36px;">
+                    <div class="card" style="background:#fff;padding:36px 54px;border-radius:14px;box-shadow:0 2px 16px rgba(0,0,0,0.09);font-size:1.2rem;min-width:160px;flex:1;display:flex;flex-direction:column;align-items:center;">
+                        <span style="color:#888;font-size:1.1rem;">Users</span>
+                        <strong id="users-count" style="font-size:2.5rem;margin-top:8px;">0</strong>
+                    </div>
+                    <div class="card" style="background:#fff;padding:36px 54px;border-radius:14px;box-shadow:0 2px 16px rgba(0,0,0,0.09);font-size:1.2rem;min-width:160px;flex:1;display:flex;flex-direction:column;align-items:center;">
+                        <span style="color:#888;font-size:1.1rem;">Logs</span>
+                        <strong id="logs-count" style="font-size:2.5rem;margin-top:8px;">0</strong>
+                    </div>
+                    <div class="card" style="background:#fff;padding:36px 54px;border-radius:14px;box-shadow:0 2px 16px rgba(0,0,0,0.09);font-size:1.2rem;min-width:160px;flex:1;display:flex;flex-direction:column;align-items:center;">
+                        <span style="color:#888;font-size:1.1rem;">Errors</span>
+                        <strong id="errors-count" style="font-size:2.5rem;margin-top:8px;color:#dc3545;">0</strong>
+                    </div>
+                </section>
+                <section class="charts" style="display:flex;gap:32px;flex-wrap:wrap;margin-bottom:36px;">
+                    <div class="chart-container" style="flex:1;background:#fff;padding:24px 32px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.06);min-width:320px;">
+                        <h3 style="margin-top:0;font-size:1.2rem;color:#23272b;">User Signups Over Time</h3>
+                        <canvas id="signupChart"></canvas>
+                    </div>
+                    <div class="chart-container" style="flex:1;background:#fff;padding:24px 32px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.06);min-width:320px;">
+                        <h3 style="margin-top:0;font-size:1.2rem;color:#23272b;">User Role Distribution</h3>
+                        <canvas id="roleChart"></canvas>
+                    </div>
+                </section>
+                <section style="margin-top:24px;">
+                    <h2 style="font-size:1.2rem;color:#23272b;margin-bottom:14px;">Recent Logs</h2>
+                    <ul id="logs-list" style="background:#fff;padding:20px 24px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,0.06);list-style:none;margin:0;max-height:220px;overflow-y:auto;font-size:1.05rem;"></ul>
+                </section>
+            </main>
+        </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Logout functionality
+        document.getElementById('logout').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('token');
+            window.location.href = "index.html";
+        });
+
+        // Fetch stats and draw charts
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = "index.html";
+        } else {
+            fetch('http://localhost:5000/api/dashboard/stats', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Unauthorized');
+                return res.json();
+            })
+            .then(data => {
+                // Update cards
+                document.getElementById('users-count').textContent = data.userCount ?? 0;
+                document.getElementById('logs-count').textContent = data.logs ?? 0;
+                document.getElementById('errors-count').textContent = data.errors ?? 0;
+
+                // Draw signup chart
+                const signupDates = Object.keys(data.signupStats);
+                const signupCounts = Object.values(data.signupStats);
+
+                const ctx1 = document.getElementById('signupChart').getContext('2d');
+                new Chart(ctx1, {
+                    type: 'line',
+                    data: {
+                        labels: signupDates,
+                        datasets: [{
+                            label: 'User Signups',
+                            data: signupCounts,
+                            borderColor: '#007bff',
+                            backgroundColor: 'rgba(0,123,255,0.15)',
+                            fill: true,
+                            tension: 0.3,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#007bff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { display: true } },
+                        scales: {
+                            x: { grid: { color: '#eee' } },
+                            y: { grid: { color: '#eee' }, beginAtZero: true }
+                        }
+                    }
+                });
+
+                // Draw role chart
+                const ctx2 = document.getElementById('roleChart').getContext('2d');
+                new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(data.roleStats),
+                        datasets: [{
+                            data: Object.values(data.roleStats),
+                            backgroundColor: ['#28a745', '#ffc107', '#007bff', '#dc3545', '#6c757d'],
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { position: 'bottom' } }
+                    }
+                });
+
+                // Show recent logs
+                const logsList = document.getElementById('logs-list');
+                logsList.innerHTML = '';
+                if (Array.isArray(data.recentLogs) && data.recentLogs.length > 0) {
+                    data.recentLogs.forEach(log => {
+                        const li = document.createElement('li');
+                        li.style.padding = "7px 0";
+                        li.innerHTML = `<span style="color:#23272b;">${log.action}</span> <span style="color:#888;font-size:0.97em;">(${log.user || "system"} - ${new Date(log.time).toLocaleString()})</span>`;
+                        logsList.appendChild(li);
+                    });
+                } else {
+                    logsList.innerHTML = '<li style="color:#888;">No logs yet.</li>';
+                }
+            })
+            .catch(err => {
+                alert('Unauthorized or error loading dashboard.');
+                localStorage.removeItem('token');
+                window.location.href = "index.html";
+            });
+        }
+    </script>
 </body>
 </html>
