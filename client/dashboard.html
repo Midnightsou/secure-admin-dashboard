@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin dashboard</title>
+</head>
+<body style="margin:0;font-family:Arial,sans-serif;background:#f4f4f4;">
+    <div class="dashboard" style="display:flex;min-height:100vh;">
+        <aside class="sidebar" style="width:220px;background:#23272b;color:#fff;padding:30px 0 0 0;display:flex;flex-direction:column;align-items:center;">
+            <h2 style="margin-bottom:30px;font-size:1.7rem;">Admin</h2>
+            <ul style="list-style:none;padding:0;width:100%;margin:0;">
+                <li><a href="#" style="display:block;padding:14px 32px;color:#fff;text-decoration:none;transition:background 0.2s;">Dashboard</a></li>
+                <li><a href="#" style="display:block;padding:14px 32px;color:#fff;text-decoration:none;transition:background 0.2s;">Users</a></li>
+                <li><a href="#" style="display:block;padding:14px 32px;color:#fff;text-decoration:none;transition:background 0.2s;">Logs</a></li>
+                <li><a href="#" style="display:block;padding:14px 32px;color:#fff;text-decoration:none;transition:background 0.2s;">Settings</a></li>
+                <li><a href="#" id="logout" style="display:block;padding:14px 32px;color:#dc3545;text-decoration:none;transition:background 0.2s;">Logout</a></li>
+            </ul>
+        </aside>
+        <main class="main-content" style="flex:1;padding:40px;">
+            <header class="navbar" style="margin-bottom:30px;display:flex;align-items:center;justify-content:space-between;">
+                <h1 style="margin:0;font-size:2.2rem;color:#23272b;">Dashboard</h1>
+                <span style="color:#888;font-size:1rem;">Welcome, Admin</span>
+            </header>
+            <section class="cards" style="display:flex;gap:28px;flex-wrap:wrap;">
+                <div class="card" style="background:#fff;padding:32px 48px;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,0.08);font-size:1.2rem;min-width:140px;flex:1;">
+                    Users<br><strong style="font-size:2rem;">102</strong>
+                </div>
+                <div class="card" style="background:#fff;padding:32px 48px;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,0.08);font-size:1.2rem;min-width:140px;flex:1;">
+                    Logs<br><strong style="font-size:2rem;">534</strong>
+                </div>
+                <div class="card" style="background:#fff;padding:32px 48px;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,0.08);font-size:1.2rem;min-width:140px;flex:1;">
+                    Errors<br><strong style="font-size:2rem;color:#dc3545;">2</strong>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
